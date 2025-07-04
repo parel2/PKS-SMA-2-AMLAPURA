@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PKS - Patroli Keamanan Sekolah | SMA Negeri 2 Amlapura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f2f2f2;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #001f3f 0%, #0074D9 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: parallax 20s linear infinite;
+        }
+
+        @keyframes parallax {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+
+        .header-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .hamburger {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 31, 63, 0.95);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .hamburger:hover {
+            background: rgba(0, 31, 63, 1);
+            transform: scale(1.1);
+        }
+
+        .hamburger span {
+            width: 20px;
+            height: 2px;
+            background: white;
+            margin: 2px 0;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        .nav-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(0, 31, 63, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 20px;
+            min-width: 200px;
+            transform: translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .nav-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 12px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 5px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateX(5px);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #001f3f;
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #001f3f, #0074D9);
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            color: #555;
+        }
+
+        /* Benefits Section */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid #001f3f;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #001f3f, #0074D9);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .benefit-card h3 {
+            color: #001f3f;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Activities Section */
+        .activities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .activity-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #001f3f;
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .activity-item h3 {
+            color: #001f3f;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,31,63,0.9));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #001f3f, #0074D9);
+            color: white;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Registration Section */
+        .registration {
+            background: linear-gradient(135deg, #001f3f, #0074D9);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            margin: 80px 0;
+            border-radius: 25px;
+        }
+
+        .register-btn {
+            display: inline-block;
+            background: white;
+            color: #001f3f;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            background: #f8f9fa;
+        }
+
+        /* Footer */
+        .footer {
+            background: #001f3f;
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            .nav {
+                top: 15px;
+                right: 15px;
+            }
+
+            .hamburger {
+                width: 45px;
+                height: 45px;
+            }
+
+            .nav-menu {
+                min-width: 180px;
+            }
+
+            .section {
+                padding: 60px 15px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .activities-list {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 15px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .about-content {
+                padding: 25px;
+                font-size: 1rem;
+            }
+
+            .benefit-card {
+                padding: 20px;
+            }
+
+            .register-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-menu" id="navMenu">
+            <ul class="nav-links">
+                <li><a href="#home" onclick="closeMenu()">Beranda</a></li>
+                <li><a href="#about" onclick="closeMenu()">Tentang</a></li>
+                <li><a href="#benefits" onclick="closeMenu()">Keuntungan</a></li>
+                <li><a href="#activities" onclick="closeMenu()">Kegiatan</a></li>
+                <li><a href="#gallery" onclick="closeMenu()">Galeri</a></li>
+                <li><a href="#structure" onclick="closeMenu()">Kepengurusan</a></li>
+                <li><a href="#schedule" onclick="closeMenu()">Agenda</a></li>
+                <li><a href="#registration" onclick="closeMenu()">Pendaftaran</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="header" id="home">
+        <div class="header-content">
+            <div class="logo">
+                <img src="http://admin.sman2amlapura.sch.id/images/Activity/logo_djldu3qZ1642327172.jpg" alt="Logo PKS">
+            </div>
+            <h1>Patroli Keamanan Sekolah (PKS)</h1>
+            <p>Menjaga Ketertiban dan Keamanan Sekolah dengan Semangat dan Disiplin.</p>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">Apa Itu PKS</h2>
+        <div class="about-content">
+            <p>PKS adalah singkatan dari Patroli Keamanan Sekolah. Ini merupakan organisasi di sekolah yang berperan menjaga keamanan, ketertiban, dan membantu kedisiplinan siswa setiap hari. Kami berkomitmen untuk menciptakan lingkungan sekolah yang aman, tertib, dan kondusif untuk proses pembelajaran.</p>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="section" id="benefits">
+        <h2 class="section-title">Keuntungan Bergabung</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🎯</div>
+                <h3>Melatih Disiplin & Tanggung Jawab</h3>
+                <p>Mengembangkan karakter disiplin dan rasa tanggung jawab yang tinggi dalam setiap tugas.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">👑</div>
+                <h3>Meningkatkan Rasa Kepemimpinan</h3>
+                <p>Membangun jiwa kepemimpinan melalui berbagai kegiatan dan tanggung jawab organisasi.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📚</div>
+                <h3>Pengalaman Organisasi Bermanfaat</h3>
+                <p>Mendapatkan pengalaman berorganisasi yang akan sangat berguna di masa depan.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🤝</div>
+                <h3>Relasi Pertemanan Lintas Kelas</h3>
+                <p>Membangun networking dan persahabatan dengan siswa dari berbagai kelas dan angkatan.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section class="section" id="activities">
+        <h2 class="section-title">Kegiatan PKS</h2>
+        <div class="activities-list">
+            <div class="activity-item">
+                <h3>🔍 Patroli Pagi</h3>
+                <p>Bertugas keliling sekolah saat siswa lain berbaris di lapangan untuk mengikuti pembiasaan pagi.</p>
+            </div>
+            <div class="activity-item">
+                <h3>🚪 Penjagaan Gerbang Pagi</h3>
+                <p>Mengatur kedisiplinan siswa di gerbang sekolah dan memastikan kelengkapan seragam.</p>
+            </div>
+            <div class="activity-item">
+                <h3>🚦 Pengaturan Lalu Lintas</h3>
+                <p>Membantu mengatur lalu lintas kendaraan di area sekolah untuk keamanan bersama.</p>
+            </div>
+            <div class="activity-item">
+                <h3>🎖️ Latihan Baris-Berbaris Mingguan</h3>
+                <p>Melaksanakan latihan rutin untuk meningkatkan kedisiplinan dan kekompakan tim.</p>
+            </div>
+            <div class="activity-item">
+                <h3>📢 Edukasi Tertib Berlalu Lintas</h3>
+                <p>Memberikan sosialisasi kepada setiap Anggota PKS tentang pentingnya keselamatan berlalu lintas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section" id="gallery">
+        <h2 class="section-title">Dokumentasi Kegiatan</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item fade-in">
+                <img src="https://via.placeholder.com/300x200/001f3f/ffffff?text=Upacara+Bendera" alt="Pengamanan Upacara">
+                <div class="gallery-overlay">
+                    <h3>Pengamanan Upacara Bendera</h3>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://via.placeholder.com/300x200/001f3f/ffffff?text=Latihan+Baris" alt="Latihan Baris-berbaris">
+                <div class="gallery-overlay">
+                    <h3>Latihan Baris-berbaris</h3>
+                </div>
+            </div>
+            <div class="gallery-item fade-in">
+                <img src="https://via.placeholder.com/300x200/001f3f/ffffff?text=Pengaturan+Lalin" alt="Pengaturan Lalu Lintas">
+                <div class="gallery-overlay">
+                    <h3>Pengaturan Lalu Lintas</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structure Section -->
+    <section class="section" id="structure">
+        <h2 class="section-title">Struktur Kepengurusan (2025)</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jabatan</th>
+                        <th>Nama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Pembina</strong></td>
+                        <td>I Nengah Rijasa</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ketua</strong></td>
+                        <td>Wirianata</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wakil Ketua 1</strong></td>
+                        <td>Parel</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wakil Ketua 2</strong></td>
+                        <td>Nadia</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sekretaris</strong></td>
+                        <td>Sandra</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bendahara</strong></td>
+                        <td>Ratih</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subsie</strong></td>
+                        <td>Radit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="section" id="schedule">
+        <h2 class="section-title">Agenda Kegiatan</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kegiatan</th>
+                        <th>Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Serah Terima Jabatan</strong></td>
+                        <td>Acara pergantian kepengurusan PKS dari periode sebelumnya</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Masa Orientasi PKS</strong></td>
+                        <td>Pengenalan dan pelatihan dasar untuk anggota baru PKS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ekstra 1X Sebulan</strong></td>
+                        <td>Kegiatan ekstrakurikuler rutin setiap bulan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>tugas jaga organisasi lain</strong></td>
+                        <td>Turut serta membantu tugas jaga untuk organisasi yang membutuhkan anggota keamanan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Penjagaan Motion</strong></td>
+                        <td>Tugas mengawasi event Motion di sekolah</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration" id="registration">
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Bergabunglah dengan PKS!</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 30px;">Jadilah bagian dari tim yang menjaga keamanan dan ketertiban sekolah. Daftarkan dirimu sekarang!</p>
+        <a href="https://forms.gle/xxxxx" class="register-btn">Daftar Sekarang</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 PKS SMA Negeri 2 Amlapura | Dibuat oleh Tim PKS dengan Semangat.</p>
+    </footer>
+
+    <script>
+        // Hamburger menu functions
+        function toggleMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.getElementById('navMenu');
+            
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const nav = document.getElementById('navbar');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (!nav.contains(e.target) && navMenu.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        // Smooth scroll and section animations
+        window.addEventListener('scroll', function() {
+            // Fade in sections on scroll
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                const windowHeight = window.innerHeight;
+                const scrollPosition = window.scrollY;
+
+                if (scrollPosition >= sectionTop - windowHeight + 100) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+
+        // Initial load animation
+        window.addEventListener('load', function() {
+            const firstSection = document.querySelector('.section');
+            if (firstSection) {
+                firstSection.classList.add('visible');
+            }
+        });
+    </script>
+</body>
+</html>
